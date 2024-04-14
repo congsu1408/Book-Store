@@ -6,6 +6,10 @@ require '../includes/header.php' ?>
     if(isset($_POST['submit'])){
         if(empty($_POST['username']) OR empty($_POST['email']) OR empty($_POST['password'])){
             echo "<script>alert('one or more inputs are empty');</script>";
+        } elseif ($conn->query("SELECT * FROM users WHERE email = '$_POST[email]'")->rowCount() > 0) {
+            echo "<script>alert('email already exists');</script>";
+        } elseif ($conn->query("SELECT * FROM users WHERE username = '$_POST[username]'")->rowCount() > 0) {
+            echo "<script>alert('username already exists');</script>";
         } else {
             $username = $_POST['username'];
             $email = $_POST['email'];
@@ -16,7 +20,7 @@ require '../includes/header.php' ?>
             $insert->execute([
                 'username' => $username,
                 'email' => $email,
-                'password' => $password
+                'password' => password_hash($password, PASSWORD_DEFAULT)
             ]);
 
             header('location: login.php');
