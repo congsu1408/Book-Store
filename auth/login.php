@@ -3,7 +3,9 @@ require '../includes/header.php' ?>
 <?php require '../config/config.php' ?>
 
 <?php
-
+    if(isset($_SESSION['username'])){
+        header("location: ".APPURL ." ");
+    }
     if(isset($_POST['submit'])){
         if(empty($_POST['email']) or empty($_POST['password'])){
             echo "<script>alert('one or more inputs are empty');</script>";
@@ -18,7 +20,10 @@ require '../includes/header.php' ?>
             if ($login->rowCount() > 0) {
                 $user = $login->fetch();
                 if (password_verify($password, $user['password'])) {
-                    echo "<script>alert('login successful');</script>";
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['id'] = $user['id'];
+                    header("location: ".APPURL." ");
                 } else {
                     echo "<script>alert('email or password are wrong');</script>";
                 }
