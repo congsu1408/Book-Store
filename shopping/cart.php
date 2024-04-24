@@ -54,12 +54,12 @@
                 <a class="nav-link  text-white" href="#">Register</a>
             </li>
         </ul>
-       
+
         </div>
     </div>
     </nav>
 
-    <div class="container">   
+    <div class="container">
     <div class="row d-flex justify-content-center align-items-center h-100 mt-5 mt-5">
       <div class="col-12">
         <div class="card card-registration card-registration-2" style="border-radius: 15px;">
@@ -135,7 +135,7 @@
                   <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                   <hr class="my-4">
 
-                  
+
 
                   <div class="d-flex justify-content-between mb-5">
                     <h5 class="text-uppercase">Total price</h5>
@@ -150,11 +150,11 @@
             </div>
           </div>
         </div>
-       
+
       </div>
 
     </div>
-  </div>  
+  </div>
 
     <footer class="bg-dark text-white text-center text-lg-start" style="margin-top: 40px">
         <!-- Grid container -->
@@ -229,5 +229,5 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="" crossorigin="anonymous"></script>
   </body>
- 
+
 </html>

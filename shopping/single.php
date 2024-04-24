@@ -2,14 +2,42 @@
 require "../includes/header.php" ?>
 <?php require "../config/config.php" ?>
 <?php
+
+    if(isset($_POST['submit'])){
+        $pro_id = $_POST['pro_id'];
+        $pro_name = $_POST['pro_name'];
+        $pro_image = $_POST['pro_image'];
+        $pro_price = $_POST['pro_price'];
+        $pro_amount = $_POST['pro_amount'];
+        $pro_file = $_POST['pro_file'];
+        $user_id = $_POST['user_id'];
+
+        $insert = $conn->prepare("INSERT INTO cart (pro_id, pro_name, pro_image, pro_price, pro_amount, pro_file, user_id) VALUES (:pro_id, :pro_name, :pro_image, :pro_price, :pro_amount, :pro_file, :user_id)");
+
+        $insert->execute([
+            'pro_id' => $pro_id,
+            'pro_name' => $pro_name,
+            'pro_image' => $pro_image,
+            'pro_price' => $pro_price,
+            'pro_amount' => $pro_amount,
+            'pro_file' => $pro_file,
+            'user_id' => $user_id
+        ]);
+
+    }
     if(isset($_GET['id'])){
         $id = $_GET['id'];
+        //checking if the product exists
+        $select = $conn->query("SELECT * FROM cart WHERE pro_id = '$id' AND user_id = '$_SESSION[id]' ");
+        $select->execute();
+
         $product = $conn->query("SELECT * FROM products WHERE id = $id AND status = 1 ");
         $product->execute();
         $product = $product->fetch(PDO::FETCH_OBJ);
     } else{
         echo "404";
     }
+
 ?>
         <div class="row d-flex justify-content-center">
             <div class="col-md-10">
@@ -31,8 +59,36 @@ require "../includes/header.php" ?>
                                     </div>
                                 </div>
                                 <p class="about"><?php echo $product->description ?></p>
-
-                                <div class="cart mt-4 align-items-center"> <button class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button> </div>
+                                <form method="post" id="form-data">
+                                    <div class="">
+                                        <input name="pro_id" type="text"  class="form-control" value="<?php echo $product->id ?>">
+                                    </div>
+                                    <div class="">
+                                        <input name="pro_name" type="text"  class="form-control" value="<?php echo $product->name ?>">
+                                    </div>
+                                    <div class="">
+                                        <input name="pro_image" type="text"  class="form-control" value="<?php echo $product->image ?>">
+                                    </div>
+                                    <div class="">
+                                        <input name="pro_price" type="text"  class="form-control" value="<?php echo $product->price ?>">
+                                    </div>
+                                    <div class="">
+                                        <input name="pro_amount" type="text"  class="form-control" value="1">
+                                    </div>
+                                    <div class="">
+                                        <input name="pro_file" type="text"  class="form-control" value="<?php echo $product->file ?>">
+                                    </div>
+                                    <div class="">
+                                        <input name="user_id" type="text"  class="form-control" value="<?php echo $_SESSION['id'] ?>">
+                                    </div>
+                                    <div class="cart mt-4 align-items-center">
+                                        <?php if($select->rowCount()>0): ?>
+                                        <button name="submit" type="submit" disabled class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button>
+                                        <?php else: ?>
+                                        <button name="submit" type="submit" class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button>
+                                        <?php endif; ?>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -42,3 +98,21 @@ require "../includes/header.php" ?>
 
 
 <?php require"../includes/footer.php" ?>
+
+<script>
+    $(document).ready(function(){
+        $(document).on('submit', function (e){
+            e.preventDefault();
+            var formdata = $('#form-data').serialize() + "&submit=submit";
+
+            $.ajax({
+                url: 'single.php',
+                type: 'post',
+                data: formdata,
+                success: function(){
+                    alert('Product added to cart')
+                }
+            })
+        })
+    });
+</script>
