@@ -1,7 +1,16 @@
 <?php
-       session_start();
+global $conn;
+session_start();
 
        define('APPURL', 'http://localhost/bookstore/');
+
+       require dirname(dirname(__FILE__)). '/config/config.php';
+
+       if(isset($_SESSION['id'])){
+              $getNumber = $conn->query("SELECT * FROM cart WHERE user_id = '$_SESSION[id]' ");
+              $getNumber = $getNumber->rowCount();
+         }
+
 
 ?>
 
@@ -35,14 +44,14 @@
                     <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>">Home</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link  text-white" href="<?php echo APPURL?>/contact.php">Contact</a>
+                    <a class="nav-link  text-white" href="<?php echo APPURL?>contact.php">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>/categories/index.php">Categories</a>
+                    <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>categories/index.php">Categories</a>
                 </li>
                 <?php if(isset($_SESSION['username'])): ?>
                 <li class="nav-item">
-                    <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>/shopping/cart.php"><i class="fas fa-shopping-cart"></i>(2)</a>
+                    <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>shopping/cart.php"><i class="fas fa-shopping-cart"></i>(<?php echo $getNumber?>)</a>
                 </li>
 
                 <li class="nav-item dropdown">

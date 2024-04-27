@@ -32,10 +32,15 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Total Price</th>
                         <th scope="col">Update</th>
-                        <th scope="col"><a href="#" class="btn btn-danger text-white">Clear</a></th>
+                        <th scope="col"><button class="delete-all btn btn-danger text-white">Clear</button></th>
                       </tr>
                     </thead>
                     <tbody>
+                    <?php if(count($allProduccts) == 0): ?>
+                        <tr>
+                            <td colspan="7" class="text-center">No products in the cart</td>
+                        </tr>
+                    <?php endif; ?>
                     <?php foreach($allProduccts as $product): ?>
                       <tr class="mb-4">
                         <td><img width="100" height="100"
@@ -46,10 +51,10 @@
                         <td class="pro_price"><?php echo $product->pro_price; ?></td>
                         <td><input id="form1" min="1" name="quantity" value="<?php echo $product->pro_amount; ?>" type="number"
                         class="form-control form-control-sm pro_amount" /></td>
-                        <td class="total_price">$<?php echo $product->pro_price; ?></td>
-                        <td><button href="#" class="btn btn-warning text-white"><i class="fas fa-pen"></i> </button></td>
+                        <td class="total_price"><?php echo $product->pro_price * $product->pro_amount; ?></td>
+                        <td><button value="<?php echo $product->id; ?>" class="btn-update btn btn-warning text-white"><i class="fas fa-pen"></i> </button></td>
 
-                        <td><button href="#" class="btn btn-danger text-white"><i class="fas fa-trash-alt"></i> </button></td>
+                        <td><button value="<?php echo $product->id; ?>" class="btn-delete btn btn-danger text-white"><i class="fas fa-trash-alt"></i> </button></td>
                       </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -99,7 +104,6 @@
 
             $el.find(".total_price").append(total+'$');
 
-/*
             $(".btn-update").on('click', function(e) {
 
                 var id = $(this).val();
@@ -111,18 +115,56 @@
                     data: {
                         update: "update",
                         id: id,
-                        product_amount: pro_amount
+                        pro_amount: pro_amount
                     },
 
                     success: function() {
                         // alert("done");
-                        reload();
+                        // reload();
                     }
                 })
             });
 
-            */
             fetch();
+        });
+
+        $(".btn-delete").on('click', function(e) {
+
+            var id = $(this).val();
+
+
+            $.ajax({
+                type: "POST",
+                url: "delete-item.php",
+                data: {
+                    delete: "delete",
+                    id: id
+                },
+
+                success: function() {
+                    alert("product deleted");
+                    reload();
+                }
+            })
+        });
+
+        $(".delete-all").on('click', function(e) {
+
+            var id = $(this).val();
+
+
+            $.ajax({
+                type: "POST",
+                url: "delete-all-item.php",
+                data: {
+                    delete: "delete"
+                },
+
+                success: function() {
+                    alert("all product deleted");
+                    reload();
+                }
+            })
         });
 
         fetch();
@@ -139,11 +181,11 @@
             }, 4000);
         }
 
-        /*function reload() {
+        function reload() {
 
 
             $("body").load("cart.php")
 
-        }*/
+        }
     });
 </script>
