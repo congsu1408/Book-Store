@@ -1,10 +1,18 @@
-<?php require"../includes/header.php" ?>
+<?php global $conn;
+require"../includes/header.php" ?>
 <?php require"../config/config.php" ?>
 <?php
     $products = $conn->query("SELECT * FROM cart WHERE user_id = '$_SESSION[id]' ");
     $products->execute();
 
     $allProduccts = $products->fetchAll(PDO::FETCH_OBJ);
+
+    if(isset($_POST['submit'])){
+        $price = $_POST['price'];
+        $_SESSION['price']= $price;
+        header("Location: checkout.php");
+
+    }
 
 
 
@@ -68,14 +76,16 @@
                   <hr class="my-4">
 
 
+                    <form action="cart.php" method="post">
+                        <div class="d-flex justify-content-between mb-5">
+                            <h5 class="text-uppercase">Total price</h5>
+                            <h5 class="full_price"></h5>
+                            <input type="text"name="price" class="inp_price">
+                        </div>
 
-                  <div class="d-flex justify-content-between mb-5">
-                    <h5 class="text-uppercase">Total price</h5>
-                    <h5 class="full_price"></h5>
-                  </div>
-
-                  <button type="button" class="btn btn-dark btn-block btn-lg"
-                    data-mdb-ripple-color="dark">Checkout</button>
+                        <button type="submit" name="submit" class="btn btn-dark btn-block btn-lg"
+                                data-mdb-ripple-color="dark">Checkout</button>
+                    </form>
 
                 </div>
               </div>
@@ -178,7 +188,8 @@
                     sum += parseFloat($(this).text());
                 });
                 $(".full_price").html(sum+"$");
-            }, 4000);
+                $(".inp_price").val(sum);
+            }, 1000);
         }
 
         function reload() {
