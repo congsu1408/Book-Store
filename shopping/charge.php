@@ -53,7 +53,7 @@ require "../includes/header.php" ?>
                             onApprove: (data, actions) => {
                                 return actions.order.capture().then(function(orderData) {
 
-                                    window.location.href='http://127.0.0.1:8000/hotels/success';
+                                    window.location.href='http://localhost/bookstore/dowload.php';
                                 });
                             }
                         }).render('#paypal-button-container');

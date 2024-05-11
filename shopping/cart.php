@@ -80,7 +80,7 @@ require"../includes/header.php" ?>
                         <div class="d-flex justify-content-between mb-5">
                             <h5 class="text-uppercase">Total price</h5>
                             <h5 class="full_price"></h5>
-                            <input type="text"name="price" class="inp_price">
+                            <input type="hidden" name="price" class="inp_price">
                         </div>
 
                         <button type="submit" name="submit" class="btn btn-dark btn-block btn-lg"
