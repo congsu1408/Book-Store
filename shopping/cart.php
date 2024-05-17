@@ -2,6 +2,9 @@
 require"../includes/header.php" ?>
 <?php require"../config/config.php" ?>
 <?php
+if(!isset($_SESSION['username'])){
+    header("location: ".APPURL ." ");
+}
     $products = $conn->query("SELECT * FROM cart WHERE user_id = '$_SESSION[id]' ");
     $products->execute();
 
@@ -83,7 +86,7 @@ require"../includes/header.php" ?>
                             <input type="hidden" name="price" class="inp_price">
                         </div>
 
-                        <button type="submit" name="submit" class="btn btn-dark btn-block btn-lg"
+                        <button type="submit" name="submit" class="checkout btn btn-dark btn-block btn-lg"
                                 data-mdb-ripple-color="dark">Checkout</button>
                     </form>
 
@@ -189,7 +192,14 @@ require"../includes/header.php" ?>
                 });
                 $(".full_price").html(sum+"$");
                 $(".inp_price").val(sum);
-            }, 1000);
+
+                if($(".inp_price").val()>0){
+                    $(".checkout").attr("disabled", false);
+                } else {
+                    $(".checkout").attr("disabled", true);
+                }
+
+            }, 100);
         }
 
         function reload() {

@@ -37,7 +37,7 @@ require "../includes/header.php" ?>
         $product->execute();
         $product = $product->fetch(PDO::FETCH_OBJ);
     } else{
-        echo "404";
+        header("location: ".APPURL ."404.php ");
     }
 
 ?>
